@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import re
 
-OLLAMA_MODEL = "qwen2.5-coder:0.5b"
+OLLAMA_MODEL = "gemma3:270m"
 
 def rule_based_filter(text):
     t = text.lower().strip()
@@ -12,9 +12,9 @@ def rule_based_filter(text):
         r"define religion",
         r"types of religion",
         r"history of religion",
-        r"what is a bomb calorimeter",        # scientific
-        r"sex ratio",                          # demographic
-        r"sexual reproduction in plants",      # biology
+        r"what is a bomb calorimeter",        
+        r"sex ratio",                          
+        r"sexual reproduction in plants",   
     ]
     for pattern in harmless_patterns:
         if re.search(pattern, t):
@@ -59,7 +59,7 @@ def rule_based_filter(text):
         if re.search(pattern, t):
             return "This request is not allowed due to harmful content."
 
-    # Then check sensitive keywords (fallback)
+    
     for key, msg in sensitive_rules.items():
         if key in t:
             return msg
@@ -81,13 +81,13 @@ def call_ollama(prompt_text):
 
 
 
-# STREAMLIT UI APP
+
 st.set_page_config(page_title="AI Chatbot", page_icon="🤖")
 
-st.title("🤖 Local AI Chatbot using Ollama")
+st.title("Rule Based AI Chatbot")
 st.caption("Running model: **" + OLLAMA_MODEL + "**")
 
-# Chat history
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -96,7 +96,7 @@ for msg in st.session_state.messages:
         st.write(msg["content"])
 
 
-# User Input
+
 user_input = st.chat_input("Ask anything...")
 
 
